@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Pedido implements Serializable {
 
@@ -22,27 +24,28 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instate;
-	
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
-	
+
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
-	
+
 	@ManyToOne
-	@JoinColumn(name="endereço_de_entrega_id")
+	@JoinColumn(name = "endereço_de_entrega_id")
 	private Endereco enderecoDeEntrega;
-	
-	@OneToMany(mappedBy="id.pedido")
+
+	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
-	
-	
-	public Pedido() {}
 
+	public Pedido() {
+	}
 
-	public Pedido(Integer id, Date instate,  Cliente cliente, Endereco enderecoDeEntrega) {
+	public Pedido(Integer id, Date instate, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instate = instate;
@@ -50,56 +53,53 @@ public class Pedido implements Serializable {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 	public Integer getId() {
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public Date getInstate() {
 		return instate;
 	}
 
-
 	public void setInstate(Date instate) {
 		this.instate = instate;
 	}
-
 
 	public Pagamento getPagamento() {
 		return pagamento;
 	}
 
-
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
 	}
-
 
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
 
 	public Endereco getEnderecoDeEntrega() {
 		return enderecoDeEntrega;
 	}
 
-
 	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -108,7 +108,6 @@ public class Pedido implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -127,21 +126,4 @@ public class Pedido implements Serializable {
 		return true;
 	}
 
-
-	/**
-	 * @return the itens
-	 */
-	public Set<ItemPedido> getItens() {
-		return itens;
-	}
-
-
-	/**
-	 * @param itens the itens to set
-	 */
-	public void setItens(Set<ItemPedido> itens) {
-		this.itens = itens;
-	}
-	
-	
 }
